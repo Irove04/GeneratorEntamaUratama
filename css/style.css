@@ -1,21 +1,21 @@
 :root {
-    /* 🎨 Variables base de color */
-    --entama-accent: #ff82b3;
-    --uratama-accent: #4b9cff;
+    --entama-accent: #ffb6c1;
+    --uratama-accent: #87cefa;
     --neutral-color: #333;
-    --card-bg: #ffffff;
-    --control-border: rgba(0, 0, 0, 0.08);
+    --card-bg: #fff8f8;
+    --control-border: rgba(255, 182, 193, 0.5);
+    --shadow: rgba(0, 0, 0, 0.1);
 }
 
 body {
-    font-family: Inter, system-ui, Arial;
+    font-family: 'Comic Sans MS', 'Inter', system-ui, Arial;
     max-width: 900px;
     margin: 24px auto;
-    padding: 20px;
-    border-radius: 12px;
-    color: var(--neutral-color);
-    background-color: var(--card-bg); /* fondo base simple */
+    padding: 24px;
+    border-radius: 20px;
+    background-color: var(--card-bg);
     transition: background 0.4s ease, color 0.4s ease;
+    box-shadow: 0 6px 18px var(--shadow);
 }
 
 /* Tema ENTAMA */
@@ -23,7 +23,7 @@ body.entama {
     background: url('img/EntaBack.jpg');
     background-repeat: repeat;
     background-size: auto;
-    color: #9b1458;
+    color: #e75480;
 }
 
 body.entama button {
@@ -34,37 +34,44 @@ body.entama button {
 body.uratama {
     background: url('img/UraBack.webp') no-repeat center center fixed;
     background-size: cover;
-    color: #08396d;
+    color: #1e3f66;
 }
 
 body.uratama button {
     background: var(--uratama-accent);
 }
 
-/* ✨ Estilos generales */
+/* Estilos generales */
 h1 {
+    font-family: 'Fredoka One', 'Pacifico', cursive;
     text-align: center;
-    margin-bottom: 8px;
+    margin-bottom: 16px;
+    font-size: 2em;
+    text-shadow: 1px 1px 3px #fff;
 }
 
 label {
     display: block;
     margin-top: 12px;
-    font-weight: 600;
+    font-weight: 700;
+    color: #555;
 }
 
 select,
 input[type="text"],
 button {
     width: 100%;
-    padding: 8px;
+    padding: 12px;
     margin-top: 6px;
     font-size: 16px;
-    border-radius: 8px;
+    border-radius: 12px;
     border: 1px solid var(--control-border);
     background: var(--card-bg);
     box-sizing: border-box;
+    transition: all 0.3s ease;
 }
+
+
 
 input[type="radio"] {
     width: auto;
@@ -77,24 +84,27 @@ button {
     border: none;
     color: white;
     font-weight: 700;
-    padding: 10px 14px;
-    border-radius: 8px;
-    transition: transform 0.12s ease, filter 0.12s ease;
+    padding: 12px 16px;
+    border-radius: 16px;
+    transition: transform 0.15s ease, filter 0.15s ease;
+    box-shadow: 0 4px 12px var(--shadow);
 }
 
 button:active {
-    transform: scale(0.98);
+    transform: scale(0.95);
 }
 
 /* Código de salida */
 .code {
-    font-family: monospace;
+    font-family: 'Courier New', monospace;
     font-size: 16px;
     margin-top: 14px;
-    background: rgba(255, 255, 255, 0.8);
-    padding: 12px;
-    border-radius: 8px;
+    background: rgba(255, 228, 230, 0.8);
+    padding: 16px;
+    border-radius: 12px;
     white-space: pre-wrap;
+    box-shadow: 0 4px 10px var(--shadow);
+    color: #d6336c;
 }
 
 /* Oculta selects por defecto */
@@ -124,6 +134,6 @@ button:active {
     .two-up {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 12px;
+        gap: 16px;
     }
 }
