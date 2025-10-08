@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Generador de passcodes Entama / Uratama</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body{font-family: Inter, system-ui, Arial;max-width:700px;margin:24px auto;padding:20px}
+        label, select, input, button{display:block;margin-top:10px;padding:6px;font-size:16px}
+        .code{font-family:monospace;font-size:20px;margin-top:14px;background:#f5f5f5;padding:10px;border-radius:8px;white-space:pre;}
+    </style>
+</head>
+<body>
+
+<h1>Generador de passcodes Entama / Uratama</h1>
+
+<label>Versión:</label>
+<input type="radio" name="version" id="rbEntama" checked> Entama
+<input type="radio" name="version" id="rbUratama"> Uratama
+
+<label>Tu código 14 dígitos:</label>
+<input type="text" id="txtLoginNumber1" maxlength="7" placeholder="Primer 7 dígitos">
+<input type="text" id="txtLoginNumber2" maxlength="7" placeholder="Segundo 7 dígitos">
+
+<label>Elige tus recompensas:</label>
+<select id="ddlItemEntama">
+    <option value="5203">M block</option>
+    <option value="5208">G block</option>
+    <option value="5209">C block</option>
+    <option value="5202">T block</option>
+    <option value="4000">10G</option>
+    <option value="4001">30G</option>
+    <option value="4002">50G</option>
+    <option value="4003">100G</option>
+    <option value="4004">150G</option>
+    <option value="4005">200G</option>
+    <option value="4006">250G</option>
+    <option value="4007">300G</option>
+    <option value="4008">350G</option>
+    <option value="4009">400G</option>
+    <option value="4010">500G</option>
+    <option value="4011">600G</option>
+    <option value="4012">700G</option>
+    <option value="4013">800G</option>
+    <option value="4014">900G</option>
+    <option value="5028">omu-rice</option>
+    <option value="5029">steamed bun</option>
+    <option value="5030">dumplings</option>
+    <option value="5031">egg</option>
+    <option value="5032">common mushroom</option>
+    <option value="5033">garlic</option>
+    <option value="5034">crab</option>
+    <option value="5035">fugu</option>
+    <option value="5036">tomato</option>
+    <option value="5037">soba</option>
+    <option value="5038">melon-pan</option>
+    <option value="5039">osenbei</option>
+    <option value="5040">milk</option>
+    <option value="5041">green tea</option>
+    <option value="5042">choco bar</option>
+    <option value="5043">fruit cocktail</option>
+    <option value="5044">melon</option>
+    <option value="5045">fish-shaped an bun</option>
+    <option value="5046">coffee jelly</option>
+    <option value="5047">fries</option>
+    <option value="5048">Mame - cubes</option>
+    <option value="5049">Mame - triangular flask</option>
+    <option value="5050">Mame - extract</option>
+    <option value="5051">Mame - sprout</option>
+    <option value="5052">Mame - square flask</option>
+    <option value="5063">Mame - anchovie</option>
+    <option value="5064">Mame - parfait</option>
+    <option value="5065">Mame - bag lunch</option>
+    <option value="5066">Mame - square donut</option>
+    <option value="5067">Mame - square onigiri</option>
+    <option value="5068">Mame - square mushroom</option>
+    <option value="5069">Mame - square apple</option>
+    <option value="5070">Mame - Kintarou candy</option>
+    <option value="5071">Mame - Mame drink</option>
+    <option value="5072">Mame - glasses bun</option>
+    <option value="5122">drum</option>
+    <option value="5199">love fruit</option>
+    <option value="5198">hamburger</option>
+    <option value="5210">onigiri</option>
+    <option value="5211">hotdog</option>
+    <option value="5212">rare mushroom</option>
+    <option value="5213">cupcake</option>
+    <option value="5214">dango</option>
+    <option value="5215">ice cream cone</option>
+    <option value="5101">mochi</option>
+    <option value="5102">Valentine's chocolates</option>
+    <option value="5103">amazake</option>
+    <option value="5104">picnic set</option>
+    <option value="5105">edamame</option>
+    <option value="5106">moon cake</option>
+    <option value="5107">Christmas cake</option>
+    <option value="5185">matchmaker coupon - hatena #1</option>
+    <option value="5186">matchmaker coupon - hatena #2</option>
+    <option value="5187">matchmaker coupon - hatena #3</option>
+    <option value="5188">job coupon - crossing guard</option>
+    <option value="5189">job coupon - barker</option>
+    <option value="5190">job coupon - garbageman</option>
+    <option value="5191">job coupon - castle servant</option>
+    <option value="5192">job coupon - weatherman</option>
+    <option value="5194">Ciao Comic eye drops</option>
+    <option value="5108">Shogakukan pre-school Grade Magazine</option>
+    <option value="5195">Korokoro Comic dragon</option>
+    <option value="5196">JAL toy airplane</option>
+    <option value="5197">Kirin Beverages EcoPanda doll</option>
+    <option value="5150">Mame City - book</option>
+    <option value="5146">Mame City - PC</option>
+    <option value="5147">Mame City - flash cards</option>
+    <option value="5149">Mame City - sculpture</option>
+</select>
+
+<button type="button" id="btnGetStuff">Generar passcode</button>
+
+<div class="code" id="resultado"></div>
+
+<script>
+    var arrCodes = ['Bxxxx0xSAxxDxC','Bxxxx1xSAxxDxC','xABxx2xSCxxxxD','xABxx3xSCxxxxD','xxxDS4xCxxABxx','xxxDS5xCxxABxx','xDCxx6xxxxxSBA','xDCxx7xxxxxSBA','xSDxC8xxBxAxxx','xSDxC9xxBxAxxx'];
+
+    function isNumber(value){ return !isNaN(parseInt(value)); }
+    function checkLength(input,len){ return input.length === len; }
+
+    $('#btnGetStuff').click(function(){
+        var n1 = $('#txtLoginNumber1').val();
+        var n2 = $('#txtLoginNumber2').val();
+        if(!isNumber(n1) || !isNumber(n2)){
+            alert('Los inputs deben ser números');
+            return;
+        }
+        if(!checkLength(n1,7) || !checkLength(n2,7)){
+            alert('Ambos códigos deben tener 7 dígitos cada uno');
+            return;
+        }
+
+        var login = n1 + n2;
+        var sixth = parseInt(login[5]);
+        if(sixth >= arrCodes.length) sixth = 0;
+        var pattern = arrCodes[sixth];
+
+        var codeNumber = $('#ddlItemEntama').val().padStart(4,'0');
+
+        var finalCode = '';
+        for(var i=0;i<pattern.length;i++){
+            finalCode += pattern[i]==='x' ? login[i] : pattern[i];
+        }
+
+        finalCode = finalCode.replace('A',codeNumber[0])
+            .replace('B',codeNumber[1])
+            .replace('C',codeNumber[2])
+            .replace('D',codeNumber[3]);
+
+        var checkSumVal = finalCode.replace('S','0');
+        var sum = 0;
+        for(var i=0;i<checkSumVal.length;i++) sum += parseInt(checkSumVal[i]);
+        finalCode = finalCode.replace('S',(sum % 10).toString());
+
+        var displayCode = "Introduce este código en tu Entama:\n\n";
+        displayCode += finalCode.substring(0,7) + "\n";
+        displayCode += finalCode.substring(7);
+
+        $('#resultado').text(displayCode);
+    });
+</script>
+
+</body>
+</html>
