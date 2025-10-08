@@ -1,0 +1,129 @@
+:root {
+    /* 🎨 Variables base de color */
+    --entama-accent: #ff82b3;
+    --uratama-accent: #4b9cff;
+    --neutral-color: #333;
+    --card-bg: #ffffff;
+    --control-border: rgba(0, 0, 0, 0.08);
+}
+
+body {
+    font-family: Inter, system-ui, Arial;
+    max-width: 900px;
+    margin: 24px auto;
+    padding: 20px;
+    border-radius: 12px;
+    color: var(--neutral-color);
+    background-color: var(--card-bg); /* fondo base simple */
+    transition: background 0.4s ease, color 0.4s ease;
+}
+
+/* Tema ENTAMA */
+body.entama {
+    background: url('img/EntaBack.jpg');
+    background-repeat: repeat;
+    background-size: auto;
+    color: #9b1458;
+}
+
+body.entama button {
+    background: var(--entama-accent);
+}
+
+/* Tema URATAMA */
+body.uratama {
+    background: url('img/UraBack.webp') no-repeat center center fixed;
+    background-size: cover;
+    color: #08396d;
+}
+
+body.uratama button {
+    background: var(--uratama-accent);
+}
+
+/* ✨ Estilos generales */
+h1 {
+    text-align: center;
+    margin-bottom: 8px;
+}
+
+label {
+    display: block;
+    margin-top: 12px;
+    font-weight: 600;
+}
+
+select,
+input[type="text"],
+button {
+    width: 100%;
+    padding: 8px;
+    margin-top: 6px;
+    font-size: 16px;
+    border-radius: 8px;
+    border: 1px solid var(--control-border);
+    background: var(--card-bg);
+    box-sizing: border-box;
+}
+
+input[type="radio"] {
+    width: auto;
+    margin-right: 8px;
+    transform: translateY(2px);
+}
+
+button {
+    cursor: pointer;
+    border: none;
+    color: white;
+    font-weight: 700;
+    padding: 10px 14px;
+    border-radius: 8px;
+    transition: transform 0.12s ease, filter 0.12s ease;
+}
+
+button:active {
+    transform: scale(0.98);
+}
+
+/* Código de salida */
+.code {
+    font-family: monospace;
+    font-size: 16px;
+    margin-top: 14px;
+    background: rgba(255, 255, 255, 0.8);
+    padding: 12px;
+    border-radius: 8px;
+    white-space: pre-wrap;
+}
+
+/* Oculta selects por defecto */
+#itemsENTAMA,
+#itemsURATAMA {
+    display: none;
+}
+
+/* Animación de aparición */
+.fade-in {
+    animation: fadeIn 0.25s ease forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-6px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive */
+@media (min-width: 640px) {
+    .two-up {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+    }
+}

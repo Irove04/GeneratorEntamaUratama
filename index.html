@@ -5,26 +5,28 @@
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Generador de passcodes Entama / Uratama</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <style>
-        body{font-family: Inter, system-ui, Arial;max-width:700px;margin:24px auto;padding:20px}
-        label, select, input, button{display:block;margin-top:10px;padding:6px;font-size:16px}
-        .code{font-family:monospace;font-size:20px;margin-top:14px;background:#f5f5f5;padding:10px;border-radius:8px;white-space:pre;}
-    </style>
+    <link rel="stylesheet" href="css/style.css"/>
+
 </head>
 <body>
 
-<h1>Generador de passcodes Entama / Uratama</h1>
+<h1>✨ Generador de passcodes Entama / Uratama ✨</h1>
 
-<label>Versión:</label>
-<input type="radio" name="version" id="rbEntama" checked> Entama
-<input type="radio" name="version" id="rbUratama"> Uratama
+<div class="row">
+    <label><input type="radio" name="version" id="rbEntama"> Entama</label>
+    <label><input type="radio" name="version" id="rbUratama"> Uratama</label>
+</div>
 
-<label>Tu código 14 dígitos:</label>
-<input type="text" id="txtLoginNumber1" maxlength="7" placeholder="Primer 7 dígitos">
-<input type="text" id="txtLoginNumber2" maxlength="7" placeholder="Segundo 7 dígitos">
+<label>Tu código (14 dígitos):</label>
+<div class="two-up">
+    <input type="text" id="txtLoginNumber1" maxlength="7" placeholder="Primeros 7 dígitos">
+    <input type="text" id="txtLoginNumber2" maxlength="7" placeholder="Siguientes 7 dígitos">
+</div>
 
 <label>Elige tus recompensas:</label>
-<select id="ddlItemEntama">
+
+<!-- ENTAMA (lista completa que pegaste) -->
+<select id="itemsENTAMA" aria-label="Recompensas Entama">
     <option value="5203">M block</option>
     <option value="5208">G block</option>
     <option value="5209">C block</option>
@@ -114,57 +116,185 @@
     <option value="5149">Mame City - sculpture</option>
 </select>
 
-<button type="button" id="btnGetStuff">Generar passcode</button>
+<!-- URATAMA (lista completa que pegaste) -->
+<select id="itemsURATAMA" aria-label="Recompensas Uratama">
+    <!-- Dinero -->
+    <option value="4000">10G</option>
+    <option value="4001">30G</option>
+    <option value="4002">50G</option>
+    <option value="4003">100G</option>
+    <option value="4004">150G</option>
+    <option value="4005">200G</option>
+    <option value="4006">250G</option>
+    <option value="4007">300G</option>
+    <option value="4008">350G</option>
+    <option value="4009">400G</option>
+    <option value="4010">500G</option>
+    <option value="4011">600G</option>
+    <option value="4012">700G</option>
+    <option value="4013">800G</option>
+    <option value="4014">900G</option>
 
-<div class="code" id="resultado"></div>
+    <!-- Humor -->
+    <option value="6000">1 humor</option>
+    <option value="6010">2 humor</option>
+    <option value="6020">3 humor</option>
+    <option value="6030">4 humor</option>
+    <option value="6040">5 humor</option>
+    <option value="6050">6 humor</option>
+    <option value="6060">7 humor</option>
+    <option value="6070">8 humor</option>
+    <option value="6080">9 humor</option>
+    <option value="6090">10 humor</option>
+    <option value="6100">12 humor</option>
+    <option value="6110">15 humor</option>
+    <option value="6120">17 humor</option>
+    <option value="6130">20 humor</option>
 
-<script>
-    var arrCodes = ['Bxxxx0xSAxxDxC','Bxxxx1xSAxxDxC','xABxx2xSCxxxxD','xABxx3xSCxxxxD','xxxDS4xCxxABxx','xxxDS5xCxxABxx','xDCxx6xxxxxSBA','xDCxx7xxxxxSBA','xSDxC8xxBxAxxx','xSDxC9xxBxAxxx'];
+    <!-- Gorgeous -->
+    <option value="6001">1 gorgeous</option>
+    <option value="6011">2 gorgeous</option>
+    <option value="6021">3 gorgeous</option>
+    <option value="6031">4 gorgeous</option>
+    <option value="6041">5 gorgeous</option>
+    <option value="6051">6 gorgeous</option>
+    <option value="6061">7 gorgeous</option>
+    <option value="6071">8 gorgeous</option>
+    <option value="6081">9 gorgeous</option>
+    <option value="6091">10 gorgeous</option>
+    <option value="6101">12 gorgeous</option>
+    <option value="6111">15 gorgeous</option>
+    <option value="6121">17 gorgeous</option>
+    <option value="6131">20 gorgeous</option>
 
-    function isNumber(value){ return !isNaN(parseInt(value)); }
-    function checkLength(input,len){ return input.length === len; }
+    <!-- Passion -->
+    <option value="6002">1 passion</option>
+    <option value="6012">2 passion</option>
+    <option value="6022">3 passion</option>
+    <option value="6032">4 passion</option>
+    <option value="6042">5 passion</option>
+    <option value="6052">6 passion</option>
+    <option value="6062">7 passion</option>
+    <option value="6072">8 passion</option>
+    <option value="6082">9 passion</option>
+    <option value="6092">10 passion</option>
+    <option value="6102">12 passion</option>
+    <option value="6112">15 passion</option>
+    <option value="6122">17 passion</option>
+    <option value="6132">20 passion</option>
 
-    $('#btnGetStuff').click(function(){
-        var n1 = $('#txtLoginNumber1').val();
-        var n2 = $('#txtLoginNumber2').val();
-        if(!isNumber(n1) || !isNumber(n2)){
-            alert('Los inputs deben ser números');
-            return;
-        }
-        if(!checkLength(n1,7) || !checkLength(n2,7)){
-            alert('Ambos códigos deben tener 7 dígitos cada uno');
-            return;
-        }
+    <!-- Cupones -->
+    <option value="5185">matchmaker coupon - bikkuri #1</option>
+    <option value="5186">matchmaker coupon - bikkuri #2</option>
+    <option value="5187">matchmaker coupon - bikkuri #3</option>
+    <option value="5188">job coupon - appointment reminder</option>
+    <option value="5189">job coupon - smile sign bearer</option>
+    <option value="5190">job coupon - cheerleader</option>
+    <option value="5191">job coupon - sun-lamp operator</option>
+    <option value="5192">job coupon - ferry boat operator</option>
 
-        var login = n1 + n2;
-        var sixth = parseInt(login[5]);
-        if(sixth >= arrCodes.length) sixth = 0;
-        var pattern = arrCodes[sixth];
+    <!-- Ítems raros -->
+    <option value="5194">hand-mirror (?)</option>
+    <option value="5195">spiky fruit (?)</option>
+    <option value="5196">demon statue (?)</option>
+    <option value="5197">soda-pop</option>
+    <option value="5198">Mametchi bun (?)</option>
+    <option value="5199">hair bow</option>
+    <option value="5200">Tohato Poteko hand</option>
+    <option value="5201">cracker with caviar (?)</option>
+    <option value="5202">bowl of ramen (?)</option>
+    <option value="5203">Sapporo Tokeidai (?)</option>
+    <option value="5208">pot of (?)</option>
+    <option value="5209">lion-dog statue</option>
+    <option value="5210">onigiri</option>
+    <option value="5211">hotdog</option>
+    <option value="5212">rare mushroom</option>
+    <option value="5213">cupcake</option>
+    <option value="5214">dango</option>
+    <option value="5215">ice cream cone</option>
+    <option value="5216">tooth-shaped bread</option>
+    <option value="5217">bottled UraRiver water</option>
 
-        var codeNumber = $('#ddlItemEntama').val().padStart(4,'0');
+    <!-- Comida -->
+    <option value="5028">omu-rice</option>
+    <option value="5029">steamed bun</option>
+    <option value="5030">dumplings</option>
+    <option value="5031">egg</option>
+    <option value="5032">common mushroom</option>
+    <option value="5033">garlic</option>
+    <option value="5034">crab</option>
+    <option value="5035">fugu</option>
+    <option value="5036">tomato</option>
+    <option value="5037">soba</option>
+    <option value="5038">melon-pan</option>
+    <option value="5039">osenbei</option>
+    <option value="5040">milk</option>
+    <option value="5041">green tea</option>
+    <option value="5042">choco bar</option>
+    <option value="5043">fruit cocktail</option>
+    <option value="5044">melon</option>
+    <option value="5045">fish-shaped an bun</option>
+    <option value="5046">coffee jelly</option>
+    <option value="5047">fries</option>
 
-        var finalCode = '';
-        for(var i=0;i<pattern.length;i++){
-            finalCode += pattern[i]==='x' ? login[i] : pattern[i];
-        }
+    <!-- UraMame / UraMeme / UraKuchi -->
+    <option value="5048">UraMame - lip fruit</option>
+    <option value="5049">UraMame - octopus</option>
+    <option value="5050">UraMame - extract</option>
+    <option value="5051">UraMame - sprout</option>
+    <option value="5052">UraMame - gourd</option>
+    <option value="5054">UraMeme - gorgeous sprout</option>
+    <option value="5055">UraMeme - light bulb sprout</option>
+    <option value="5056">UraMeme - flower</option>
+    <option value="5057">UraMeme - crown fruit</option>
+    <option value="5058">UraKuchi - extract</option>
+    <option value="5061">UraKuchi - flower</option>
+    <option value="5062">UraKuchi - soccer ball fruit</option>
+    <option value="5063">UraMame - fantail fish</option>
+    <option value="5064">UraMame - parfait</option>
+    <option value="5065">UraMame - box lunch</option>
+    <option value="5066">UraMame - bowtie donut</option>
+    <option value="5067">UraMame - bowtie onigiri</option>
+    <option value="5068">UraMame - bowtie mushroom</option>
+    <option value="5069">UraMame - bowtie apple</option>
+    <option value="5071">UraMame - drink</option>
 
-        finalCode = finalCode.replace('A',codeNumber[0])
-            .replace('B',codeNumber[1])
-            .replace('C',codeNumber[2])
-            .replace('D',codeNumber[3]);
+    <!-- Objetos y regalos -->
+    <option value="5093">car</option>
+    <option value="5094">bean bags</option>
+    <option value="5095">microphone</option>
+    <option value="5096">trampoline</option>
 
-        var checkSumVal = finalCode.replace('S','0');
-        var sum = 0;
-        for(var i=0;i<checkSumVal.length;i++) sum += parseInt(checkSumVal[i]);
-        finalCode = finalCode.replace('S',(sum % 10).toString());
+    <!-- Tickets y ciudades -->
+    <option value="5138">ticket - Mame City</option>
+    <option value="5139">ticket - GuruGuru Town</option>
+    <option value="5140">ticket - Patchi Forest</option>
+    <option value="5141">ticket - Gozaru Village</option>
+    <option value="5142">ticket - Berry Town</option>
+    <option value="5143">ticket - Flower Hills</option>
+    <option value="5144">ticket - Oyaji Village</option>
 
-        var displayCode = "Introduce este código en tu Entama:\n\n";
-        displayCode += finalCode.substring(0,7) + "\n";
-        displayCode += finalCode.substring(7);
+    <!-- Eventos y festivales -->
+    <option value="5101">mochi</option>
+    <option value="5102">Valentine's chocolates</option>
+    <option value="5106">moon cake</option>
+    <option value="5107">Christmas cake</option>
 
-        $('#resultado').text(displayCode);
-    });
-</script>
+    <!-- Otros -->
+    <option value="5218">mushroom house</option>
+    <option value="5219">star-light</option>
+    <option value="5220">lantern plant</option>
+</select>
+
+<div style="margin-top:12px;">
+    <button id="btnGetStuff">Generar passcode</button>
+</div>
+
+<!-- Contenedor passcode resultado -->
+<div class="code" id="resultado" aria-live="polite"></div>
+
+<!-- Script Generador -->
+<script src="scriptGenerator.js"></script>
 
 </body>
 </html>
