@@ -1,5 +1,5 @@
-// Patrones base
-const arrCodes = [
+// 🌸 ARRAY BASE DE PATRONES PARA GENERAR CÓDIGOS
+var patrones = [
     'Bxxxx0xSAxxDxC',
     'Bxxxx1xSAxxDxC',
     'xABxx2xSCxxxxD',
@@ -12,40 +12,38 @@ const arrCodes = [
     'xSDxC9xxBxAxxx'
 ];
 
-// util helpers
-function isNumber(value) {
-    return /^\d+$/.test(String(value).trim());
+//COMPROVACIONES
+
+// Comprueba si un valor es un número
+function esNumero(valor) {
+    return /^\d+$/.test(String(valor).trim());
 }
 
-function checkLength(input, len) {
-    return String(input).length === len;
+// Comprueba si la longitud de un texto es igual a la esperada
+function comprobarLongitud(valor, longitud) {
+    return String(valor).length === longitud;
 }
 
-// on load: hide selects and reset background
-$(function () {
-    $('#itemsENTAMA, #itemsURATAMA').hide();
-    $('#rbEntama, #rbUratama').prop('checked', false);
-    $('body').removeClass('entama uratama').css({
-        'background': 'url("img/NeutralBack.webp") no-repeat center center fixed',
-        'background-size': 'cover'
-    });
-});
 
-// when user chooses version: show only the corresponding select and change background
-$('#rbEntama, #rbUratama').change(function () {
-    const isEntama = $('#rbEntama').is(':checked');
-    const isUratama = $('#rbUratama').is(':checked');
+//CUANDO SE ELIGE ENTAMA O URATAMA
+$('#rbEntama, #rbUratama').change(function() {
 
+    // Comprobamos qué radio está activado
+    var esEntama = $('#rbEntama').is(':checked');
+    var esUratama = $('#rbUratama').is(':checked');
+
+    // Quitamos clases antiguas
     $('body').removeClass('entama uratama');
 
-    if (isEntama) {
+    // Cambiamos fondo según elección
+    if (esEntama) {
         $('body')
             .addClass('entama')
             .css({
                 'background': 'url("img/EntaBack.jpg")',
                 'background-size': 'auto'
             });
-    } else if (isUratama) {
+    } else if (esUratama) {
         $('body')
             .addClass('uratama')
             .css({
@@ -54,7 +52,8 @@ $('#rbEntama, #rbUratama').change(function () {
             });
     }
 
-    if (isEntama) {
+    // Mostramos el selector correcto
+    if (esEntama) {
         $('#itemsURATAMA').hide();
         $('#itemsENTAMA').stop(true, true).fadeIn(250);
     } else {
@@ -63,67 +62,85 @@ $('#rbEntama, #rbUratama').change(function () {
     }
 });
 
-// Generate passcode
-$('#btnGetStuff').click(function () {
-    const n1 = $('#txtLoginNumber1').val().trim();
-    const n2 = $('#txtLoginNumber2').val().trim();
-    const isEntama = $('#rbEntama').is(':checked');
-    const isUratama = $('#rbUratama').is(':checked');
+//GENERADOR DE PASSCODE
+$('#btnGetStuff').click(function() {
 
-    if (!isEntama && !isUratama) {
-        alert('Elige si es Entama o Uratama');
-        return;
-    }
-    if (!isNumber(n1) || !isNumber(n2)) {
-        alert('Introduce el passcode');
-        return;
-    }
-    if (!checkLength(n1, 7) || !checkLength(n2, 7)) {
-        alert('Ambos códigos deben tener 7 dígitos cada uno');
+    // Guardamos los valores que mete el usuario
+    var codigo1 = $('#txtLoginNumber1').val().trim();
+    var codigo2 = $('#txtLoginNumber2').val().trim();
+
+    var esEntama = $('#rbEntama').is(':checked');
+    var esUratama = $('#rbUratama').is(':checked');
+
+    // Validaciones básicas
+    if (!esEntama && !esUratama) {
+        alert("Primero elige si es un Entama o un Uratama 🩷");
         return;
     }
 
-    const login = n1 + n2; // 14 digits
-    let sixth = parseInt(login[5], 10);
-    if (isNaN(sixth)) sixth = 0;
-    sixth = sixth % arrCodes.length;
-    const pattern = arrCodes[sixth];
+    if (!esNumero(codigo1) || !esNumero(codigo2)) {
+        alert("Introduce ambos códigos correctamente (solo números).");
+        return;
+    }
 
-    const selectedItem = isEntama
+    if (!comprobarLongitud(codigo1, 7) || !comprobarLongitud(codigo2, 7)) {
+        alert("Cada código debe tener exactamente 7 dígitos.");
+        return;
+    }
+
+    // Unimos ambos códigos
+    var login = codigo1 + codigo2; // total 14 dígitos
+
+    // Tomamos el sexto dígito (sirve para elegir el patrón)
+    var sexto = parseInt(login[5], 10);
+    if (isNaN(sexto)) sexto = 0;
+    sexto = sexto % patrones.length;
+
+    // Obtenemos el patrón correcto según ese número
+    var patron = patrones[sexto];
+
+    // Guardamos el ítem seleccionado
+    var objetoElegido = esEntama
         ? $('#itemsENTAMA').val()
         : $('#itemsURATAMA').val();
 
-    const codeNumber = String(selectedItem || '0000').padStart(4, '0');
+    // Aseguramos que tenga 4 dígitos (relleno con ceros)
+    var numeroCodigo = String(objetoElegido || '0000').padStart(4, '0');
 
-    // build code from pattern
-    let finalCode = '';
-    for (let i = 0; i < pattern.length; i++) {
-        finalCode += pattern[i] === 'x' ? (login[i] || '0') : pattern[i];
+    // Construimos el código final letra por letra
+    var codigoFinal = "";
+    for (var i = 0; i < patron.length; i++) {
+        if (patron[i] === 'x') {
+            codigoFinal += login[i] || '0';
+        } else {
+            codigoFinal += patron[i];
+        }
     }
 
-    // replace A-D with digits from codeNumber
-    finalCode = finalCode
-        .replace('A', codeNumber[0])
-        .replace('B', codeNumber[1])
-        .replace('C', codeNumber[2])
-        .replace('D', codeNumber[3]);
+    // Reemplazamos letras A–D por los números del código
+    codigoFinal = codigoFinal
+        .replace('A', numeroCodigo[0])
+        .replace('B', numeroCodigo[1])
+        .replace('C', numeroCodigo[2])
+        .replace('D', numeroCodigo[3]);
 
-    // checksum
-    const checkSumVal = finalCode.replace(/S/g, '0');
-    let sum = 0;
-    for (let i = 0; i < checkSumVal.length; i++) {
-        const d = parseInt(checkSumVal[i], 10);
-        sum += isNaN(d) ? 0 : d;
+    // Cálculo del checksum (suma de dígitos)
+    var codigoParaSuma = codigoFinal.replace(/S/g, '0');
+    var suma = 0;
+    for (var j = 0; j < codigoParaSuma.length; j++) {
+        var digito = parseInt(codigoParaSuma[j], 10);
+        suma += isNaN(digito) ? 0 : digito;
     }
-    const checksumDigit = (sum % 10).toString();
-    finalCode = finalCode.replace('S', checksumDigit);
+    var digitoControl = (suma % 10).toString();
 
-    // show result
-    const display =
-        `Introduce este código en tu ${isEntama ? 'Entama' : 'Uratama'}:\n\n` +
-        finalCode.substring(0, 7) +
-        '\n' +
-        finalCode.substring(7);
+    // Reemplazamos la S con el dígito del checksum
+    codigoFinal = codigoFinal.replace('S', digitoControl);
 
-    $('#resultado').text(display);
+    // Mostramos el resultado final en pantalla
+    var mensaje = "Introduce este código en tu "
+        + (esEntama ? "Entama" : "Uratama") + ":\n\n"
+        + codigoFinal.substring(0, 7) + "\n"
+        + codigoFinal.substring(7);
+
+    $('#resultado').text(mensaje);
 });
